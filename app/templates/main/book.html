@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card p-4">
+            <h3 class="mb-4">
+                <i class="bi bi-calendar-plus text-primary"></i> Book an Appointment
+            </h3>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Select Doctor</label>
+                    <select name="doctor_id" class="form-select" required>
+                        <option value="" disabled selected>Choose a doctor...</option>
+                        {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}">
+                                Dr. {{ doctor.name }} — {{ doctor.specialization }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Preferred Date</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Preferred Time</label>
+                    <select name="time" class="form-select" required>
+                        <option value="" disabled selected>Choose a time slot...</option>
+                        <option>08:00</option>
+                        <option>09:00</option>
+                        <option>10:00</option>
+                        <option>11:00</option>
+                        <option>12:00</option>
+                        <option>14:00</option>
+                        <option>15:00</option>
+                        <option>16:00</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Reason for Visit</label>
+                    <textarea name="reason" class="form-control" rows="3"
+                              placeholder="Briefly describe your symptoms or reason for visit"></textarea>
+                </div>
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-check-circle"></i> Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

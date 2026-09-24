@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Welcome, {{ current_user.full_name }}</h2>
+    <a href="{{ url_for('main.book') }}" class="btn btn-primary">
+        <i class="bi bi-calendar-plus"></i> Book Appointment
+    </a>
+</div>
+
+{% if appointments %}
+    <div class="card">
+        <div class="card-header bg-white fw-bold">Your Appointments</div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Specialization</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td>Dr. {{ appt.doctor.name }}</td>
+                        <td>{{ appt.doctor.specialization }}</td>
+                        <td>{{ appt.date.strftime('%d %b %Y') }}</td>
+                        <td>{{ appt.time }}</td>
+                        <td>{{ appt.reason }}</td>
+                        <td>
+                            <span class="badge badge-{{ appt.status.lower() }}">
+                                {{ appt.status }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if appt.status != 'Cancelled' %}
+                                <a href="{{ url_for('main.cancel', appointment_id=appt.id) }}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Cancel this appointment?')">
+                                    Cancel
+                                </a>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="card p-5 text-center">
+        <i class="bi bi-calendar-x display-4 text-muted mb-3"></i>
+        <h5 class="text-muted">No appointments yet</h5>
+        <a href="{{ url_for('main.book') }}" class="btn btn-primary mt-3">Book your first appointment</a>
+    </div>
+{% endif %}
+{% endblock %}
